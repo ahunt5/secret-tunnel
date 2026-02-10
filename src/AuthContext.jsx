@@ -9,10 +9,25 @@ export function AuthProvider({ children }) {
   const [location, setLocation] = useState("GATE");
 
   // TODO: signup
-
+  const signup = async (info) => {
+    try {
+      const response = await fetch(API + "/signup", {
+        method: "POST",
+        headers: {
+          "Context-Type": "application/json",
+        },
+        body: JSON.stringify(info),
+      });
+      const result = await response.json();
+      setToken(result.token);
+      setLocation("TABLET");
+    } catch (e) {
+      console.error(e);
+    }
+  };
   // TODO: authenticate
 
-  const value = { location };
+  const value = { signup, authenticate, location };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
